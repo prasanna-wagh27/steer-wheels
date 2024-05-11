@@ -1,6 +1,7 @@
 package com.mycar.steerwheels.entity;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 
@@ -32,7 +33,7 @@ public class CarModel implements Serializable{
 	@GeneratedValue
 	@Column(name = "car_model_id")
 	@JdbcTypeCode(java.sql.Types.VARCHAR)
-	private String carModelId;
+	private UUID carModelId;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "car_type")
@@ -63,11 +64,11 @@ public class CarModel implements Serializable{
 	@Transient
 	private String encodedCarModelImage;
 
-	public String getCarModelId() {
+	public UUID getCarModelId() {
 		return carModelId;
 	}
 
-	public void setCarModelId(String carModelId) {
+	public void setCarModelId(UUID carModelId) {
 		this.carModelId = carModelId;
 	}
 

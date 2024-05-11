@@ -2,6 +2,7 @@ package com.mycar.steerwheels.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Types;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,6 +20,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
 @Table(name = "reservation")
@@ -35,9 +38,11 @@ public class Reservation implements Serializable{
 	@Column(name = "reservation_id")
 	private UUID reservationId;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "pickup_date")
 	private Date pickupDate;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "return_date")
 	private Date returnDate;
 	
@@ -57,9 +62,14 @@ public class Reservation implements Serializable{
 	private PaymentStatus paymentStatus;
 	
 	@ManyToOne(targetEntity = User.class)
-	@JoinColumn(name = "userr_id")
+	@JoinColumn(name = "user_id")
 	@JdbcTypeCode(java.sql.Types.VARCHAR)
 	private User user;
+	
+	@OneToOne(targetEntity = ReservationPayment.class)
+	@JoinColumn(name = "reservation_payment_id")
+	@JdbcTypeCode(Types.VARCHAR)
+	private ReservationPayment reservationPayment;
 
 	public UUID getReservationId() {
 		return reservationId;

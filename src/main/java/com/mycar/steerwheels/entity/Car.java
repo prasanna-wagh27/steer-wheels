@@ -46,7 +46,7 @@ public class Car implements Serializable{
 	@Column(name = "daily_rent")
 	private BigDecimal dailyRent;
 	
-	@Column(name = "is_available", columnDefinition = "BOOLLEAN DEFAULT TRUE")
+	@Column(name = "is_available", columnDefinition = "BOOLEAN DEFAULT TRUE")
 	private boolean isAvailable;
 	
 	@Column(name = "available_from")

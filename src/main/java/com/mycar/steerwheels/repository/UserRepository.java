@@ -8,8 +8,6 @@ import com.mycar.steerwheels.entity.User;
 
 public interface UserRepository extends JpaRepository<User, UUID>{
 
-	User findByMobileNumber();
-
 	User findByMobileNumber(String mobileNumber);
 
 }
