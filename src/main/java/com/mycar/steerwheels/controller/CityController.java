@@ -15,70 +15,70 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mycar.steerwheels.bo.Response;
 import com.mycar.steerwheels.constants.ErrorConstants;
-import com.mycar.steerwheels.entity.Country;
-import com.mycar.steerwheels.service.CountryService;
+import com.mycar.steerwheels.entity.City;
+import com.mycar.steerwheels.service.CityService;
 
-@RestController
-@RequestMapping("${url.prefix}/country")
-public class CountryController {
+@RestController("${url.prefix}/city")
+public class CityController {
 	
 	@Autowired
-	private CountryService countryService;
+	private CityService cityService;
 	
 	@CrossOrigin
 	@PostMapping
-	public ResponseEntity<Response> addCountry(@RequestBody Country country) throws Exception{
-		countryService.addCountry(country);
+	public ResponseEntity<Response> addCity(@RequestBody City city) throws Exception{
+		cityService.addCity(city);
 		Response response = new Response();
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Country added successfully");
+		response.setMessage("City added successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@GetMapping
-	public ResponseEntity<Response> getAllCountries(@SortDefault(sort = "countryName", direction = Direction.ASC) 
+	public ResponseEntity<Response> getAllCitiesByState(@RequestParam(name = "stateId", required = false) UUID stateId,
+			@SortDefault(sort = "name", direction = Direction.ASC) 
 	@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
-		Response response = countryService.getAllCountries(pageable);
+		Response response = cityService.getAllCitiesByState(stateId, pageable);
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("All Countries List");
+		response.setMessage("All Cities List");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@GetMapping("/active")
-	public ResponseEntity<Response> getActiveCountries(@SortDefault(sort = "countryName", direction = Direction.ASC) 
+	public ResponseEntity<Response> getActiveCitiesByState(@RequestParam(name = "stateId", required = false) UUID stateId,
+			@SortDefault(sort = "name", direction = Direction.ASC) 
 	@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
-		Response response = countryService.getActiveCountries(pageable);
+		Response response = cityService.getActiveCities(stateId, pageable);
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Active Countries List");
+		response.setMessage("Active Cities List");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
-	@GetMapping("/{countryId}")
-	public ResponseEntity<Response> getCountryById(@PathVariable("countryId") UUID countryId) throws Exception{
+	@GetMapping("/{cityId}")
+	public ResponseEntity<Response> getCityById(@PathVariable("cityId") UUID cityId) throws Exception{
 		Response response =  new Response();
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Country Details");
-		response.setData(countryService.getCountryById(countryId));
+		response.setMessage("City Details");
+		response.setData(cityService.getCityById(cityId));
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
-	@PutMapping("/{countryId}")
-	public ResponseEntity<Response> updateCountry(@PathVariable("countryId") UUID countryId, @RequestBody Country country) throws Exception{
-		countryService.updateCountry(countryId ,country);
+	@PutMapping("/{cityId}")
+	public ResponseEntity<Response> updateCity(@PathVariable("cityId") UUID cityId, @RequestBody City city) throws Exception{
+		cityService.updateCity(cityId, city);
 		Response response = new Response();
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Country updated successfully");
+		response.setMessage("City updated successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
-	
 
 }

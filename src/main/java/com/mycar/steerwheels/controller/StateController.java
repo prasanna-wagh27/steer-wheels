@@ -16,69 +16,66 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.mycar.steerwheels.bo.Response;
 import com.mycar.steerwheels.constants.ErrorConstants;
-import com.mycar.steerwheels.entity.Country;
-import com.mycar.steerwheels.service.CountryService;
+import com.mycar.steerwheels.entity.State;
+import com.mycar.steerwheels.service.StateService;
 
-@RestController
-@RequestMapping("${url.prefix}/country")
-public class CountryController {
+@RequestMapping("${url.prefix}/state")
+public class StateController {
 	
 	@Autowired
-	private CountryService countryService;
+	private StateService stateService;
 	
 	@CrossOrigin
 	@PostMapping
-	public ResponseEntity<Response> addCountry(@RequestBody Country country) throws Exception{
-		countryService.addCountry(country);
+	public ResponseEntity<Response> addState(@RequestBody State state) throws Exception{
+		stateService.addState(state);
 		Response response = new Response();
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Country added successfully");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
-	}
-	
-	@CrossOrigin
-	@GetMapping
-	public ResponseEntity<Response> getAllCountries(@SortDefault(sort = "countryName", direction = Direction.ASC) 
-	@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
-		Response response = countryService.getAllCountries(pageable);
-		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("All Countries List");
-		return new ResponseEntity<Response>(response, HttpStatus.OK);
-	}
-	
-	@CrossOrigin
-	@GetMapping("/active")
-	public ResponseEntity<Response> getActiveCountries(@SortDefault(sort = "countryName", direction = Direction.ASC) 
-	@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
-		Response response = countryService.getActiveCountries(pageable);
-		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Active Countries List");
+		response.setMessage("State added successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@GetMapping("/{countryId}")
-	public ResponseEntity<Response> getCountryById(@PathVariable("countryId") UUID countryId) throws Exception{
-		Response response =  new Response();
+	public ResponseEntity<Response> getAllStates(@SortDefault(sort = "stateName", direction = Direction.ASC) 
+	@PageableDefault(page = 0, size = 10) Pageable pageable, @PathVariable("countryId") UUID countryId) throws Exception{
+		Response response = stateService.getAllStatesByCountry(countryId ,pageable);
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Country Details");
-		response.setData(countryService.getCountryById(countryId));
+		response.setMessage("All States List By Country");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
-	@PutMapping("/{countryId}")
-	public ResponseEntity<Response> updateCountry(@PathVariable("countryId") UUID countryId, @RequestBody Country country) throws Exception{
-		countryService.updateCountry(countryId ,country);
-		Response response = new Response();
+	@GetMapping("/active/{countryId}")
+	public ResponseEntity<Response> getActiveStatesByCountry(@SortDefault(sort = "stateName", direction = Direction.ASC) 
+	@PageableDefault(page = 0, size = 10) Pageable pageable, @PathVariable("countryId") UUID countryId) throws Exception{
+		Response response = stateService.getActiveStatesByCountry(countryId, pageable);
 		response.setStatus(ErrorConstants.SUCCESS.toString());
-		response.setMessage("Country updated successfully");
+		response.setMessage("Active States List by country");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
+	@CrossOrigin
+	@GetMapping("/{stateId")
+	public ResponseEntity<Response> getStateById(@PathVariable("stateId") UUID stateId) throws Exception{
+		Response response =  new Response();
+		response.setStatus(ErrorConstants.SUCCESS.toString());
+		response.setMessage("State Details");
+		response.setData(stateService.getStateById(stateId));
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	
+	@CrossOrigin
+	@PutMapping("/{stateId}")
+	public ResponseEntity<Response> updateState(@PathVariable("stateId") UUID stateId, @RequestBody State state) throws Exception{
+		stateService.updateState(stateId, state);
+		Response response = new Response();
+		response.setStatus(ErrorConstants.SUCCESS.toString());
+		response.setMessage("State updated successfully");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
 
 }
