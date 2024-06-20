@@ -52,6 +52,10 @@ public class Car implements Serializable{
 	@Column(name = "available_from")
 	@Temporal(TemporalType.DATE)
 	private Date availableFrom;
+	
+	@Column(name = "available_from")
+	@Temporal(TemporalType.DATE)
+	private Date available;
 
 	public UUID getCarId() {
 		return carId;

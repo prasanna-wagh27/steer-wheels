@@ -17,13 +17,15 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "reservation_payment")
-public class ReservationPayment implements Serializable{
+@Table(name = "booking_payment")
+public class BookingPayment implements Serializable{
 
 	/**
 	 * 
@@ -32,14 +34,18 @@ public class ReservationPayment implements Serializable{
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "reservation_payment_id")
+	@Column(name = "booking_payment_id")
 	@JdbcTypeCode(Types.VARCHAR)
-	private UUID reservationPaymentId;
+	private UUID bookingPaymentId;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "payment_date")
 	private Date paymentDate;
 	
+	@JdbcTypeCode(Types.VARCHAR)
+	@OneToOne(targetEntity = Booking.class)
+	@JoinColumn(name = "booking_id")
+	private Booking booking;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "payment_method")
@@ -55,16 +61,24 @@ public class ReservationPayment implements Serializable{
 	@Column(name = "payment_status")
 	private PaymentStatus paymentStatus;
 
-	public UUID getReservationPaymentId() {
-		return reservationPaymentId;
+	public UUID getBookingPaymentId() {
+		return bookingPaymentId;
 	}
 
-	public void setReservationPaymentId(UUID reservationPaymentId) {
-		this.reservationPaymentId = reservationPaymentId;
+	public void setBookingPaymentId(UUID bookingPaymentId) {
+		this.bookingPaymentId = bookingPaymentId;
 	}
 
 	public Date getPaymentDate() {
 		return paymentDate;
+	}
+
+	public Booking getBooking() {
+		return booking;
+	}
+
+	public void setBooking(Booking booking) {
+		this.booking = booking;
 	}
 
 	public void setPaymentDate(Date paymentDate) {
