@@ -1,11 +1,16 @@
 package com.mycar.steerwheels.service.impl;
 
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.mycar.steerwheels.bo.Response;
 import com.mycar.steerwheels.constants.BookingStatus;
 import com.mycar.steerwheels.constants.ErrorConstants;
 import com.mycar.steerwheels.constants.PaymentStatus;
@@ -42,4 +47,60 @@ public class BookingServiceImpl implements BookingService{
 		return booking;
 	}
 
+	@Override
+	public void completeRental(UUID bookingId) throws Exception {
+		Booking exiBooking = bookingRepo.findById(bookingId)
+				.orElseThrow(()-> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Booking Not Found") );
+		exiBooking.setBookingStatus(BookingStatus.Completed);
+		bookingRepo.save(exiBooking);
+		
+		Car exiCar = carRepo.findById(exiBooking.getCar().getCarId())
+				.orElseThrow(()-> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Car not found"));
+		exiCar.setAvailable(true);
+		carRepo.save(exiCar);
+				
+	}
+
+	@Override
+	public Response getBookingsByUser(UUID userId, Pageable pageable) throws Exception{
+		Response response = new Response();
+		Page<Booking> page = bookingRepo.getBookingsByUser(userId, pageable);
+		response.setData(page.getContent());
+		response.setListCount(page.getTotalElements());
+		return response;
+	}
+
+	@Override
+	public Response getAllBookings(String searchBy, Pageable pageable) throws Exception {
+		Response response = new Response();
+		Page<Booking> page = bookingRepo.getAllBookings(searchBy, pageable);
+		response.setData(page.getContent());
+		response.setListCount(page.getTotalElements());
+		return response;
+	}
+
+	
+	@Override
+	public void cancelBooking(UUID bookingId) throws Exception {
+		Booking exiBooking = bookingRepo.findById(bookingId)
+				.orElseThrow(()-> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Booking Not Found") );
+		exiBooking.setBookingStatus(BookingStatus.Cancelled);
+		bookingRepo.save(exiBooking);
+		
+		Car exiCar = carRepo.findById(exiBooking.getCar().getCarId())
+				.orElseThrow(()-> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Car not found"));
+		exiCar.setAvailable(true);
+		carRepo.save(exiCar);
+				
+	}
+
+	@Override
+	public Response getPastBookingsByUser(UUID userId, Pageable pageable) {
+		Response response = new Response();
+		Date date = new Date();
+		Page<Booking> page = bookingRepo.getPastBookingsByUser(userId, date, pageable);
+		response.setData(page.getContent());
+		response.setListCount(page.getTotalElements());
+		return response;
+	}
 }
