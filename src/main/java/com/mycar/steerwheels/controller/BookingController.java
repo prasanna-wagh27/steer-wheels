@@ -42,7 +42,7 @@ public class BookingController {
 	}
 	
 	@CrossOrigin
-	@PutMapping
+	@PutMapping("/cancel")
 	public ResponseEntity<Response> cancelBooking(@RequestParam("bookingId") UUID bookingId) throws Exception {
 		bookingService.cancelBooking(bookingId);
 		Response response = new Response();
@@ -52,7 +52,7 @@ public class BookingController {
 	}
 
 	@CrossOrigin
-	@PutMapping
+	@PutMapping("/complete")
 	public ResponseEntity<Response> completeRental(@RequestParam("bookingId") UUID bookingId) throws Exception {
 		bookingService.completeRental(bookingId);
 		Response response = new Response();
@@ -64,7 +64,7 @@ public class BookingController {
 	@CrossOrigin
 	@GetMapping("/by-user/{userId}")
 	public ResponseEntity<Response> getBookingsByUser(@PathVariable("userId") UUID userId,
-			@SortDefault(sort = "bookingDate", direction = Direction.DESC) @PageableDefault(page = 0, size = 10) Pageable pageable)
+			@SortDefault(sort = "pickupDate", direction = Direction.DESC) @PageableDefault(page = 0, size = 10) Pageable pageable)
 			throws Exception {
 		Response response = new Response();
 		response.setStatus(ErrorConstants.SUCCESS.toString());
@@ -75,20 +75,20 @@ public class BookingController {
 	
 	@CrossOrigin
 	@GetMapping
-	public ResponseEntity<Response> getAllBookings(@RequestParam(name = "searchBy", required = false) String searchBy,
-			@SortDefault(sort = "bookingDate", direction = Direction.DESC) @PageableDefault(page = 0, size = 10) Pageable pageable)
+	public ResponseEntity<Response> getAllBookings(
+			@SortDefault(sort = "pickupDate", direction = Direction.DESC) @PageableDefault(page = 0, size = 10) Pageable pageable)
 			throws Exception {
 		Response response = new Response();
 		response.setStatus(ErrorConstants.SUCCESS.toString());
 		response.setMessage("All Bookings List");
-		response.setData(bookingService.getAllBookings(searchBy, pageable));
+		response.setData(bookingService.getAllBookings(pageable));
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 	
 	@CrossOrigin
 	@GetMapping("/by-user/past/{userId}")
 	public ResponseEntity<Response> getPastBookingsByUser(@PathVariable("userId") UUID userId,
-			@SortDefault(sort = "bookingDate", direction = Direction.DESC) @PageableDefault(page = 0, size = 10) Pageable pageable)
+			@SortDefault(sort = "pickupDate", direction = Direction.DESC) @PageableDefault(page = 0, size = 10) Pageable pageable)
 			throws Exception {
 		Response response = new Response();
 		response.setStatus(ErrorConstants.SUCCESS.toString());
