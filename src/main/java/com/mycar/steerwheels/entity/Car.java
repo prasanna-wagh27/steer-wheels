@@ -49,13 +49,17 @@ public class Car implements Serializable{
 	@Column(name = "is_available", columnDefinition = "BOOLEAN DEFAULT TRUE")
 	private boolean isAvailable;
 	
-	@Column(name = "available_from")
+	@Column(name = "available_from", nullable =  true)
 	@Temporal(TemporalType.DATE)
 	private Date availableFrom;
 	
-	@Column(name = "available_from")
+	@Column(name = "available_to", nullable = true)
 	@Temporal(TemporalType.DATE)
-	private Date available;
+	private Date availableTo;
+	
+	@ManyToOne(targetEntity = City.class)
+	@JoinColumn(name = "cityId")
+	private City city;
 
 	public UUID getCarId() {
 		return carId;
@@ -112,6 +116,21 @@ public class Car implements Serializable{
 	public void setAvailableFrom(Date availableFrom) {
 		this.availableFrom = availableFrom;
 	}
-	
 
+	public Date getAvailableTo() {
+		return availableTo;
+	}
+
+	public void setAvailableTo(Date availableTo) {
+		this.availableTo = availableTo;
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
+	}
+		
 }

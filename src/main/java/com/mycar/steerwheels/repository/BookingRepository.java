@@ -16,11 +16,11 @@ public interface BookingRepository extends JpaRepository<Booking, UUID>{
 	@Query("SELECT b FROM Booking b WHERE b.user.userId = :userId")
 	Page<Booking> getBookingsByUser(@Param("userId") UUID userId, Pageable pageable);
 
-	@Query("SELECT b FROM Booking b WHERE :")
-	Page<Booking> getAllBookings(@Param("searchBy") String searchBy, Pageable pageable);
+	@Query("SELECT b FROM Booking b")
+	Page<Booking> getAllBookings(Pageable pageable);
 
-	@Query("SELECT b FROM BOOKING b WHERE b.user.userId = : userId "
-			+ " AND b.bookingDate < DATE(date)")
+	@Query("SELECT b FROM Booking b WHERE b.user.userId = :userId "
+			+ " AND b.pickupDate < DATE(:date)")
 	Page<Booking> getPastBookingsByUser(@Param("userId") UUID userId, @Param("date") Date date, Pageable pageable);
 
 }

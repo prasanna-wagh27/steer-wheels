@@ -15,7 +15,7 @@ public interface BookingService {
 
 	Response getBookingsByUser(UUID userId, Pageable pageable) throws Exception;
 
-	Response getAllBookings(String searchBy, Pageable pageable) throws Exception;
+	Response getAllBookings(Pageable pageable) throws Exception;
 
 	void cancelBooking(UUID bookingId) throws Exception;
 

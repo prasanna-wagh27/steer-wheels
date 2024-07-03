@@ -71,9 +71,9 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public Response getAllBookings(String searchBy, Pageable pageable) throws Exception {
+	public Response getAllBookings(Pageable pageable) throws Exception {
 		Response response = new Response();
-		Page<Booking> page = bookingRepo.getAllBookings(searchBy, pageable);
+		Page<Booking> page = bookingRepo.getAllBookings(pageable);
 		response.setData(page.getContent());
 		response.setListCount(page.getTotalElements());
 		return response;
