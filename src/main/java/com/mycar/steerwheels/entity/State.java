@@ -35,6 +35,9 @@ public class State implements Serializable{
 	@JoinColumn(name = "country_id")
 	@JdbcTypeCode(java.sql.Types.VARCHAR)
 	private Country country;
+	
+	@Column(name = "status", columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private boolean status;
 
 	public UUID getStateId() {
 		return stateId;
@@ -59,6 +62,13 @@ public class State implements Serializable{
 	public void setCountry(Country country) {
 		this.country = country;
 	}
-	
+
+	public boolean getStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}	
 	
 }

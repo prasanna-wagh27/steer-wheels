@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 
+import com.mycar.steerwheels.constants.BookingStatus;
 import com.mycar.steerwheels.constants.PaymentStatus;
 
 import jakarta.persistence.Column;
@@ -19,10 +20,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity
-@Table(name = "reservation")
-public class Reservation implements Serializable{
+@Table(name = "booking")
+public class Booking implements Serializable{
 	
 	/**
 	 * 
@@ -32,12 +35,14 @@ public class Reservation implements Serializable{
 	@Id
 	@GeneratedValue
 	@JdbcTypeCode(java.sql.Types.VARCHAR)
-	@Column(name = "reservation_id")
-	private UUID reservationId;
+	@Column(name = "booking_id")
+	private UUID bookingId;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "pickup_date")
 	private Date pickupDate;
 	
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "return_date")
 	private Date returnDate;
 	
@@ -47,7 +52,7 @@ public class Reservation implements Serializable{
 	private Car car;
 	
 	@Column(name = "no_of_days")
-	private int noOfdays;
+	private long noOfdays;
 	
 	@Column(name = "total_rent")
 	private BigDecimal totalRent;
@@ -57,16 +62,20 @@ public class Reservation implements Serializable{
 	private PaymentStatus paymentStatus;
 	
 	@ManyToOne(targetEntity = User.class)
-	@JoinColumn(name = "userr_id")
+	@JoinColumn(name = "user_id")
 	@JdbcTypeCode(java.sql.Types.VARCHAR)
 	private User user;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "booking_status")
+	private BookingStatus bookingStatus;
 
-	public UUID getReservationId() {
-		return reservationId;
+	public UUID getBookingId() {
+		return bookingId;
 	}
 
-	public void setReservationId(UUID reservationId) {
-		this.reservationId = reservationId;
+	public void setBookingId(UUID bookingId) {
+		this.bookingId = bookingId;
 	}
 
 	public Date getPickupDate() {
@@ -93,11 +102,11 @@ public class Reservation implements Serializable{
 		this.car = car;
 	}
 
-	public int getNoOfdays() {
+	public long getNoOfdays() {
 		return noOfdays;
 	}
 
-	public void setNoOfdays(int noOfdays) {
+	public void setNoOfdays(long noOfdays) {
 		this.noOfdays = noOfdays;
 	}
 
@@ -125,5 +134,12 @@ public class Reservation implements Serializable{
 		this.user = user;
 	}
 
-	
+	public BookingStatus getBookingStatus() {
+		return bookingStatus;
+	}
+
+	public void setBookingStatus(BookingStatus bookingStatus) {
+		this.bookingStatus = bookingStatus;
+	}
+
 }

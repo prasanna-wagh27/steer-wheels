@@ -28,6 +28,10 @@ public class Country implements Serializable{
 
 	@Column(name = "country_name", nullable = false)
 	private String countryName;
+	
+	@Column(name = "status", columnDefinition = "BOOLEAN DEFAULT FALSE")
+	private boolean status;
+	
 
 	public UUID getCountryId() {
 		return countryId;
@@ -44,6 +48,13 @@ public class Country implements Serializable{
 	public void setCountryName(String countryName) {
 		this.countryName = countryName;
 	}
-	
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
 	
 }

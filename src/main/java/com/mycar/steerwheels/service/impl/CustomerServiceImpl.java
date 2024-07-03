@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public void validateMobileNumber(String mobileNumber) throws Exception {
-		User exiUser = userRepo.findByMobileNumber();
+		User exiUser = userRepo.findByMobileNumber(mobileNumber);
 		if(null == exiUser) {
 			throw new SteerWheelsException(ErrorConstants.INVALID.toString(), "This number is already registered. Please Login");
 		}
