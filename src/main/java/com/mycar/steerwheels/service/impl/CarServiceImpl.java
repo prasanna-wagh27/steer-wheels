@@ -52,4 +52,11 @@ public class CarServiceImpl implements CarService{
 		return response;
 	}
 
+	@Override
+	public void deleteCar(UUID carId) throws Exception {
+		Car exiCar = carRepo.findById(carId)
+				.orElseThrow( ()-> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Car not found"));
+		carRepo.delete(exiCar);
+	}
+
 }

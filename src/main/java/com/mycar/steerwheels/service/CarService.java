@@ -15,4 +15,6 @@ public interface CarService {
 
 	Response getAllCars(UUID cityId, Pageable pageable) throws Exception;
 
+	void deleteCar(UUID carId) throws Exception;
+
 }
