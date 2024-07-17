@@ -1,10 +1,17 @@
 package com.mycar.steerwheels.controller;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +37,35 @@ public class CarBrandController {
 		response.setMessage("Car Brand added successfully");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
+	
+	@CrossOrigin
+	@PutMapping("/{carBrandId}")
+	public ResponseEntity<Response> updateCarBrand(@PathVariable("carBrandId") UUID carBrandId ,@RequestBody CarBrand carBrand) throws Exception{
+		carBrandService.updateCarBrand(carBrandId, carBrand);
+		Response response = new Response();
+		response.setStatus(ErrorConstants.SUCCESS.toString());
+		response.setMessage("Car Brand updated successfully");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+
+	@CrossOrigin
+	@GetMapping("/{carBrandId}")
+	public ResponseEntity<Response> getCarBrandById(@PathVariable("carBrandId") UUID carBrandId ) throws Exception{
+		Response response = carBrandService.getCarBrandById(carBrandId);
+		response.setStatus(ErrorConstants.SUCCESS.toString());
+		response.setMessage("Car Brand details");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@CrossOrigin
+	@GetMapping()
+	public ResponseEntity<Response> getAllCarBrands(@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
+		Response response = carBrandService.getAllCarBrands(pageable);
+		response.setStatus(ErrorConstants.SUCCESS.toString());
+		response.setMessage("Car Brand List");
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
 
 }

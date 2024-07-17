@@ -57,7 +57,7 @@ public class CarController {
 	public ResponseEntity<Response> getAllcars(@RequestParam(name = "cityId", required =  false) UUID cityId,
 			@SortDefault(sort = "availableFrom", direction = Direction.DESC)
 	@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
-		Response response = carService.getAllCars(cityId ,pageable);
+		Response response = carService.getAllCars(cityId, pageable);
 		response.setStatus(ErrorConstants.SUCCESS.toString());
 		response.setMessage("Car List");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
