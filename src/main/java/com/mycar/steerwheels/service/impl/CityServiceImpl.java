@@ -32,6 +32,7 @@ public class CityServiceImpl implements CityService{
 		if(cityRepo.existsByStateAndCityName(exiState, city.getCityName())) {
 			throw new SteerWheelsException(ErrorConstants.INVALID.toString(), "City with this name already exists");
 		}
+		city.setState(exiState);
 		cityRepo.save(city);		
 	}
 

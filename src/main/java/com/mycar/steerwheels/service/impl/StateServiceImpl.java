@@ -27,15 +27,17 @@ public class StateServiceImpl implements StateService{
 
 	@Override
 	public void addState(State state) throws Exception {
+		Country exiCountry = countryRepo.findById(state.getCountry().getCountryId())
+				.orElseThrow(()-> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Country not found"));
 		if(stateRepo.existsByCountryAndStateName(state.getCountry(), state.getStateName())) {
 			throw new SteerWheelsException(ErrorConstants.INVALID.toString(), "State with this name already exists");
 		}
+		state.setCountry(exiCountry);
 		stateRepo.save(state);
 	}
 
 	@Override
 	public Response getAllStatesByCountry(UUID countryId, Pageable pageable) throws Exception{
-		
 		Response response = new Response();
 		Country exiCountry = countryRepo.findById(countryId)
 				.orElseThrow(() -> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Country not found"));
