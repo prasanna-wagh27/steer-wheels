@@ -52,6 +52,7 @@ public class CarModelServiceImpl implements CarModelService{
 		exiCarModel.setSeatingCapacity(carModel.getSeatingCapacity());
 		exiCarModel.setFuelType(carModel.getFuelType());
 		carModelRepo.save(exiCarModel);
+		
 	}
 
 	@Override
