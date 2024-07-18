@@ -24,8 +24,7 @@ public class CarServiceImpl implements CarService{
 	public void addCar(Car car) throws Exception {
 		if(carRepo.existsByRegistrationNumber(car.getRegistrationNumber())) {
 			throw new SteerWheelsException(ErrorConstants.INVALID.toString(), "This vehicle is already registered");
-		}
-		
+		}	
 		carRepo.save(car);
 	}
 
@@ -50,6 +49,13 @@ public class CarServiceImpl implements CarService{
 		response.setData(page.getContent());
 		response.setListCount(page.getTotalElements());
 		return response;
+	}
+
+	@Override
+	public void deleteCar(UUID carId) throws Exception {
+		Car exiCar = carRepo.findById(carId)
+				.orElseThrow( ()-> new SteerWheelsException(ErrorConstants.NOT_FOUND.toString(), "Car not found"));
+		carRepo.delete(exiCar);
 	}
 
 }

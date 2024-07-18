@@ -10,6 +10,7 @@ import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,13 +53,23 @@ public class CarController {
 	}
 	
 	@CrossOrigin
-	@GetMapping()
+	@GetMapping
 	public ResponseEntity<Response> getAllcars(@RequestParam(name = "cityId", required =  false) UUID cityId,
 			@SortDefault(sort = "availableFrom", direction = Direction.DESC)
 	@PageableDefault(page = 0, size = 10) Pageable pageable) throws Exception{
-		Response response = carService.getAllCars(cityId ,pageable);
+		Response response = carService.getAllCars(cityId, pageable);
 		response.setStatus(ErrorConstants.SUCCESS.toString());
 		response.setMessage("Car List");
+		return new ResponseEntity<Response>(response, HttpStatus.OK);
+	}
+	
+	@CrossOrigin
+	@DeleteMapping("/{carId}")
+	public ResponseEntity<Response> deleteCar(@PathVariable("carId") UUID carId) throws Exception{
+		carService.deleteCar(carId);
+		Response response = new Response();
+		response.setStatus(ErrorConstants.SUCCESS.toString());
+		response.setMessage("Car deleted successfully");
 		return new ResponseEntity<Response>(response, HttpStatus.OK);
 	}
 }
